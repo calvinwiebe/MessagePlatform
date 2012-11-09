@@ -1,5 +1,6 @@
 package com.messaging.queue.managers;
 
+import com.messaging.extensions.ExtensionsManager;
 import com.messaging.interfaces.MessagePlatformHook;
 import com.messaging.interfaces.UIFrameworkHook;
 import com.messaging.messages.Message;
@@ -18,6 +19,7 @@ public class UIMessageManager implements Runnable
 {
 	/**the queue*/
 	private MessageQueue messageQueue;
+	private ExtensionsManager extensionsManager;
 	/**the manager that is hooked to the UI*/
 	/* TODO
 	 * make it so managers are registered with this class dynamically
@@ -29,9 +31,10 @@ public class UIMessageManager implements Runnable
 	 * 
 	 * @param aMessageQueue
 	 */
-	public UIMessageManager(MessageQueue aMessageQueue)
+	public UIMessageManager(MessageQueue aMessageQueue, ExtensionsManager anExtensionsManager)
 	{
 		messageQueue = aMessageQueue;
+		extensionsManager = anExtensionsManager;
 		uiManager = new UIManager(messageQueue);
 	}
 	

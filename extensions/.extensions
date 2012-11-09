@@ -1,0 +1,15 @@
+####################
+#
+# This is a file of your custom message classes, and their adapters(which are essentially handlers of your messages)
+#
+# usage:
+#
+# MessagePlatform will store your messages and adapters in a map so that when the BaseManager receives one of your custom messages
+# it will know to run your custom adapter. Define your bindings as follows:
+#
+# MessageClassName : AdapterClassName,
+# MessageClassName1 : AdapterClassName1
+#
+####################
+
+Test = TestRequest, TestResponse, TestAdapter

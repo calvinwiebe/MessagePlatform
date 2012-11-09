@@ -1,5 +1,6 @@
 package com.messaging.queue.managers;
 
+import com.messaging.extensions.ExtensionsManager;
 import com.messaging.interfaces.Manager;
 import com.messaging.messages.Message;
 import com.messaging.queue.MessageQueue;
@@ -16,6 +17,7 @@ public class BaseMessageManager implements Runnable
 {
 	/**the queue*/
 	private MessageQueue messageQueue;
+	private ExtensionsManager extensionsManager;
 	/**the http manager*/
 	/* TODO
 	 * make it so managers are registered with this class dynamically
@@ -27,9 +29,10 @@ public class BaseMessageManager implements Runnable
 	 * 
 	 * @param aMessageQueue
 	 */
-	public BaseMessageManager(MessageQueue aMessageQueue)
+	public BaseMessageManager(MessageQueue aMessageQueue, ExtensionsManager anExtensionsManager)
 	{
 		messageQueue = aMessageQueue;
+		extensionsManager = anExtensionsManager;
 		httpManager = new HttpManager(messageQueue);
 	}
 	
