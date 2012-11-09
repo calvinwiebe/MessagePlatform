@@ -90,7 +90,7 @@ public class WebCalAdapter implements Adapter
 			BufferedReader reader = null;
 			try
 			{
-				file = new FileReader("C:\\Users\\pg\\workspace\\MessagePlatform\\lib\\basic.ics");
+				file = new FileReader("/home/pg/dev/messageplatform/lib/basic.ics");
 				reader = new BufferedReader(file);
 				
 				String line = reader.readLine();
