@@ -7,6 +7,6 @@ package com.messaging.messages;
  */
 public enum MessageType
 {
-	BASE_WEBCAL_REQUEST,
-	UI_WEBCAL_RESPONSE	
+	MP_REQUEST,
+	MP_RESPONSE	
 }

@@ -8,8 +8,10 @@ package com.messaging.messages;
  */
 public class Message
 {
-	/**the type of message to be switched off of*/
+	/**the type of message - a request or a response*/
 	public MessageType type;
+	/**the name of the message */
+	public String name;
 	/**if there is a generic string for this message, place it in this field*/
 	public String body;
 }

@@ -4,7 +4,7 @@ import com.messaging.interfaces.Manager;
 import com.messaging.interfaces.MessagePlatformHook;
 import com.messaging.interfaces.Observer;
 import com.messaging.interfaces.UIFrameworkHook;
-import com.messaging.messages.Message;
+import com.messaging.messages.*;
 import com.messaging.queue.MessageQueue;
 
 /**
@@ -47,12 +47,12 @@ public class UIManager implements Manager, Observer, MessagePlatformHook{
 	public void onMessageReceived(Message message) {
 		switch (message.type)
 		{
-		case BASE_WEBCAL_REQUEST:
+		case MP_REQUEST:
 		{
 			messageQueue.putMessage(message);
 			break;
 		}
-		case UI_WEBCAL_RESPONSE:
+		case MP_RESPONSE:
 		{
 			hook.onMessageReceived(message);
 			break;

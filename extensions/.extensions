@@ -12,4 +12,5 @@
 #
 ####################
 
-Test = TestRequest, TestResponse, TestAdapter
+WebCal = WebCalMessage, WebCalResponse, WebCalAdapter
+Fibonacci = FibonacciRequest, FibonacciResponse, FibonacciAdapter

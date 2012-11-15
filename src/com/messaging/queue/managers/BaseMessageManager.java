@@ -1,7 +1,11 @@
 package com.messaging.queue.managers;
 
+import java.util.Iterator;
+
+import com.messaging.adapter.Adapter;
+import com.messaging.adapter.AdapterRunner;
 import com.messaging.extensions.ExtensionsManager;
-import com.messaging.interfaces.Manager;
+import com.messaging.interfaces.Observer;
 import com.messaging.messages.Message;
 import com.messaging.queue.MessageQueue;
 
@@ -13,16 +17,12 @@ import com.messaging.queue.MessageQueue;
  * some work and then delegates it to the registered Managers. 
  *
  */
-public class BaseMessageManager implements Runnable
+public class BaseMessageManager implements Runnable, Observer
 {
 	/**the queue*/
 	private MessageQueue messageQueue;
 	private ExtensionsManager extensionsManager;
 	/**the http manager*/
-	/* TODO
-	 * make it so managers are registered with this class dynamically
-	 */
-	private Manager httpManager;
 	
 	/**
 	 * Constructor
@@ -33,7 +33,6 @@ public class BaseMessageManager implements Runnable
 	{
 		messageQueue = aMessageQueue;
 		extensionsManager = anExtensionsManager;
-		httpManager = new HttpManager(messageQueue);
 	}
 	
 	/**
@@ -48,10 +47,20 @@ public class BaseMessageManager implements Runnable
 			{
 				switch (message.type)
 				{
-				case BASE_WEBCAL_REQUEST:
+				case MP_REQUEST:
 				{
-					message = messageQueue.takeMessage();
-					httpManager.onMessageReceived(message);
+					Iterator<String> requests = extensionsManager.getRequests().iterator();
+					while (requests.hasNext()) {
+					    String request = requests.next();
+					    if (message.name.equals(request)) {
+					        //We dynamically load an Adapter using reflection from the extensions folder
+					        //create an instance and pass the work off to that thread
+					        Adapter adapter = extensionsManager.getAdapterForRequest(request);
+					        Runnable runnable = new AdapterRunner(adapter, messageQueue.takeMessage(), this);
+					        Thread worker = new Thread(runnable);
+					        worker.start();
+					    }
+					}
 					break;
 				}
 				default:
@@ -66,5 +75,10 @@ public class BaseMessageManager implements Runnable
 	{
 		dispatchMessage();
 	}
+
+    @Override
+    public void onMessageReceived(Message message) {
+        messageQueue.putMessage(message);
+    }
 
 }

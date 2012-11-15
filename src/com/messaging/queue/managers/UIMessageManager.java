@@ -21,9 +21,6 @@ public class UIMessageManager implements Runnable
 	private MessageQueue messageQueue;
 	private ExtensionsManager extensionsManager;
 	/**the manager that is hooked to the UI*/
-	/* TODO
-	 * make it so managers are registered with this class dynamically
-	 */
 	private UIManager uiManager;
 	
 	/**
@@ -73,7 +70,7 @@ public class UIMessageManager implements Runnable
 			{
 				switch (message.type)
 				{
-				case UI_WEBCAL_RESPONSE:
+				case MP_RESPONSE:
 				{
 					message = messageQueue.takeMessage();
 					uiManager.onMessageReceived(message);

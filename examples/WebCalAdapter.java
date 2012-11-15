@@ -1,4 +1,4 @@
-package com.messaging.adapter;
+
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -14,11 +14,10 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.messaging.adapter.Adapter;
 import com.messaging.interfaces.Observer;
 import com.messaging.messages.Message;
 import com.messaging.messages.MessageType;
-import com.messaging.messages.WebCalEvent;
-import com.messaging.messages.WebCalMessage;
 
 /**
  * 
@@ -62,8 +61,8 @@ public class WebCalAdapter implements Adapter
 			try
 			{
 				HttpResponse response = client.execute(get);
-				WebCalMessage message = new WebCalMessage();
-				message.type = MessageType.UI_WEBCAL_RESPONSE;
+				WebCalResponse message = new WebCalResponse();
+				message.type = MessageType.MP_RESPONSE;
 				message.body = entityToString(response.getEntity());
 				parseResponse(message);
 				return message;
@@ -82,8 +81,8 @@ public class WebCalAdapter implements Adapter
 		//grab the information for a static local file
 		else
 		{
-			WebCalMessage message = new WebCalMessage();
-			message.type = MessageType.UI_WEBCAL_RESPONSE;
+		    WebCalResponse message = new WebCalResponse();
+			message.type = MessageType.MP_RESPONSE;
 			message.body = "";
 
 			FileReader file = null;
@@ -104,7 +103,7 @@ public class WebCalAdapter implements Adapter
 				
 				parseResponse(message);
 				message.body = "message @ time: " + Calendar.getInstance().getTimeInMillis();
-				Thread.sleep((long) (Math.random()*12));
+				Thread.sleep((long) (Math.random()*30));
 				return message;
 			}
 			catch (IOException e)
@@ -113,6 +112,15 @@ public class WebCalAdapter implements Adapter
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+			finally 
+			{
+			    try {
+                    reader.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
 			}
 		
 			
@@ -127,7 +135,7 @@ public class WebCalAdapter implements Adapter
 	 * the WebCalMessage that is passed in by value
 	 * @param message - the WebCalMessag to add the events to
 	 */
-	private void parseResponse(WebCalMessage message)
+	private void parseResponse(WebCalResponse message)
 	{
 	    String[] lines = message.body.split("\\n");
 	    int last = lines.length;
@@ -152,7 +160,7 @@ public class WebCalAdapter implements Adapter
 	 * @param message - the WebCalMessage object
 	 * @param position - position of the current event in the split array
 	 */
-	private void parseEvent(WebCalMessage message, int position)
+	private void parseEvent(WebCalResponse message, int position)
 	{
 	    WebCalEvent event = new WebCalEvent();
 	    String[] lines = message.body.split("\\n");
@@ -225,7 +233,7 @@ public class WebCalAdapter implements Adapter
 	{
 		switch (message.type)
 		{
-		case BASE_WEBCAL_REQUEST:
+		case MP_REQUEST:
 			Message response = sendRequest();
 			anObserver.onMessageReceived(response);
 			break;

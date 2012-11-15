@@ -27,22 +27,41 @@ public class TestObserver implements UIFrameworkHook{
 		InputStream is = System.in;
 		Scanner in = new Scanner(is);
 		
-		System.out.println("Hit a key");
 		while (true)
 		{
-			@SuppressWarnings("unused")
+		    System.out.println("Choose an option:");
+            System.out.println("1) Run WebCal");
+            System.out.println("2) Calculate a Fibonacci number");
 			String input = in.next();
-			Message message = new Message();
-			message.type = MessageType.BASE_WEBCAL_REQUEST;
-			putMessage(message);
-			System.out.println("Hit a key");
+			switch (Integer.parseInt(input))
+			{
+    			case 1:
+    			{
+    			    WebCalMessage message = new WebCalMessage();
+                    message.type = MessageType.MP_REQUEST;
+                    putMessage(message);
+                    break;
+    			}
+			case 2:
+    			{
+    			    System.out.println("Enter a number");
+    			    String fibInput = in.next();
+    			    FibonacciRequest message = new FibonacciRequest();
+                    message.type = MessageType.MP_REQUEST;
+                    message.numberQuery = Integer.parseInt(fibInput);
+                    putMessage(message);
+                    break;
+    			}
+            default:
+                break;
+			}
 		}
 	}
 	
 	@Override
 	public void onMessageReceived(Message message)
 	{
-		System.out.println("TestObserver: " + message.body);		
+		System.out.println("\n\nTestObserver: " + message.toString() + "\n\n");		
 	}
 
 }

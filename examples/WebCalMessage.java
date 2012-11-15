@@ -1,7 +1,9 @@
-package com.messaging.messages;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import com.messaging.messages.*;
 
 
 /**
@@ -23,6 +25,7 @@ public class WebCalMessage extends Message{
 	 */
 	public WebCalMessage()
 	{
+	    name = "WebCalMessage";
 		events = new ArrayList<WebCalEvent>();
 	}
 	
